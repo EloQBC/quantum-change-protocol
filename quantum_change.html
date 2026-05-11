@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Protocole Quantum Change</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black: #0a0a0a;
+    --white: #f5f0e8;
+    --red: #c0392b;
+    --red-dark: #922b21;
+    --grey: #1e1e1e;
+    --grey-light: #333;
+    --muted: #777;
+    --accent: #e8d5b0;
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  .progress-track {
+    position: fixed; top: 0; left: 0; right: 0;
+    height: 3px; background: #1a1a1a; z-index: 100;
+  }
+  .progress-fill {
+    height: 100%; background: var(--red);
+    transition: width 0.6s ease; width: 0%;
+  }
+
+  .step-indicator {
+    position: fixed; top: 16px; right: 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 2px; z-index: 100;
+  }
+
+  .screen {
+    display: none; min-height: 100vh;
+    padding: 70px 40px 50px;
+    max-width: 680px; margin: 0 auto;
+    flex-direction: column;
+    animation: fadeUp 0.4s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 9px; letter-spacing: 4px;
+    color: var(--red); text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(34px, 6vw, 58px);
+    font-weight: 900; line-height: 1.05;
+    margin-bottom: 28px;
+  }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 700; line-height: 1.15;
+    margin-bottom: 20px;
+  }
+
+  em { color: var(--accent); font-style: italic; }
+  em.red { color: var(--red); }
+
+  p {
+    font-size: 14px; line-height: 1.75;
+    color: #bbb; margin-bottom: 12px;
+  }
+  p strong { color: var(--white); font-weight: 500; }
+
+  .divider {
+    width: 36px; height: 2px;
+    background: var(--red); margin: 28px 0;
+  }
+
+  .sci {
+    border-left: 2px solid var(--red);
+    padding: 14px 18px;
+    background: rgba(192,57,43,0.06);
+    margin-bottom: 14px;
+  }
+  .sci-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px; letter-spacing: 3px;
+    color: var(--red); text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .sci p { font-size: 13px; color: #ccc; margin: 0; }
+
+  .warn {
+    background: rgba(192,57,43,0.1);
+    border: 1px solid rgba(192,57,43,0.35);
+    padding: 14px 18px; margin: 18px 0;
+    font-size: 13px; color: #ddd; line-height: 1.65;
+  }
+
+  .cond {
+    border: 1px solid var(--grey-light);
+    padding: 20px 20px 20px 52px;
+    margin-bottom: 12px; position: relative;
+    transition: border-color 0.25s;
+  }
+  .cond:hover { border-color: var(--red); }
+  .cond-n {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px; font-weight: 900;
+    color: #2a2a2a; position: absolute;
+    top: 14px; left: 14px; line-height: 1;
+  }
+  .cond-title {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 3px;
+    color: var(--red); text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+  .cond p { font-size: 13px; margin: 0; }
+
+  textarea {
+    width: 100%;
+    background: var(--grey);
+    border: 1px solid var(--grey-light);
+    color: var(--white);
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px; line-height: 1.7;
+    padding: 18px; resize: vertical;
+    min-height: 180px; margin-top: 14px;
+    outline: none; transition: border-color 0.25s;
+  }
+  textarea:focus { border-color: var(--red); }
+  textarea::placeholder { color: var(--muted); font-style: italic; }
+
+  .wcount {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    text-align: right; margin-top: 5px;
+  }
+
+  ul.qs {
+    color: #999; font-size: 13px;
+    line-height: 2.1; margin: 10px 0 0 18px;
+  }
+
+  /* Timer */
+  .timer-wrap {
+    text-align: center; padding: 32px 0;
+  }
+  .timer-num {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(72px, 16vw, 120px);
+    font-weight: 900; line-height: 1;
+    margin-bottom: 6px; transition: color 0.4s;
+  }
+  .timer-num.urgent { color: var(--red); }
+  .timer-sub {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 3px;
+    color: var(--muted); margin-bottom: 28px;
+  }
+
+  .recap {
+    background: var(--grey);
+    border-left: 3px solid var(--red);
+    padding: 16px 20px; margin-bottom: 20px;
+    font-size: 13px; color: #bbb;
+    font-style: italic; line-height: 1.7;
+    max-height: 130px; overflow-y: auto;
+    scrollbar-width: thin; scrollbar-color: #333 transparent;
+  }
+
+  /* Actions grid */
+  .actions-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px; margin: 14px 0;
+  }
+  .act {
+    border: 1px solid var(--grey-light);
+    padding: 12px 14px; font-size: 12px;
+    color: #bbb; cursor: pointer;
+    transition: all 0.2s;
+  }
+  .act:hover { border-color: var(--red); color: var(--white); background: rgba(192,57,43,0.07); }
+  .act.sel { border-color: var(--red); background: rgba(192,57,43,0.14); color: var(--white); }
+  .act-lbl {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 8px; letter-spacing: 2px;
+    color: var(--red); text-transform: uppercase; margin-bottom: 5px;
+  }
+
+  /* Final choice */
+  .choices {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 14px; margin-top: 28px;
+  }
+  .choice {
+    border: 1px solid var(--grey-light);
+    padding: 24px 18px; cursor: pointer;
+    text-align: center; transition: all 0.25s;
+  }
+  .choice.yes { border-color: var(--red); background: rgba(192,57,43,0.09); }
+  .choice.yes:hover { background: rgba(192,57,43,0.18); }
+  .choice.no:hover { background: rgba(255,255,255,0.03); }
+  .choice-icon { font-size: 28px; margin-bottom: 10px; }
+  .choice-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px; font-weight: 700; margin-bottom: 7px;
+  }
+  .choice-desc { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+  /* Buttons */
+  .btns { display: flex; align-items: center; margin-top: 28px; gap: 12px; flex-wrap: wrap; }
+
+  .btn {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px; letter-spacing: 3px;
+    text-transform: uppercase; cursor: pointer;
+    padding: 14px 30px; border: none; transition: all 0.2s;
+  }
+  .btn-p { background: var(--red); color: var(--white); }
+  .btn-p:hover { background: var(--red-dark); }
+  .btn-p:disabled { background: #2a2a2a; color: var(--muted); cursor: not-allowed; }
+  .btn-s { background: transparent; color: var(--muted); border: 1px solid var(--grey-light); }
+  .btn-s:hover { color: var(--white); border-color: #888; }
+
+  .btn-timer {
+    background: var(--grey); color: var(--white);
+    border: 1px solid var(--grey-light);
+    padding: 16px 40px; font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+    cursor: pointer; transition: all 0.25s; margin-bottom: 16px;
+    display: block; margin-left: auto; margin-right: auto;
+  }
+  .btn-timer:hover:not(:disabled) { background: var(--red); border-color: var(--red); }
+  .btn-timer:disabled { cursor: not-allowed; opacity: 0.6; }
+
+  #final-msg { margin-top: 22px; }
+</style>
+</head>
+<body>
+
+<div class="progress-track"><div class="progress-fill" id="prog"></div></div>
+<div class="step-indicator" id="stepin">01 / 06</div>
+
+<!-- S0: INTRO -->
+<div class="screen active" id="s0">
+  <div class="label">Protocole Quantum Change — William Miller, 1994</div>
+  <h1>Une journée.<br><em>Toute ta vie.</em></h1>
+  <p>La transformation n'est pas progressive. Elle est <strong>soudaine, totale, irréversible.</strong></p>
+  <p>Ce protocole interactif te fait traverser les 4 conditions du quantum change. Ce n'est pas une lecture. C'est un exercice.</p>
+
+  <div class="divider"></div>
+
+  <div class="sci">
+    <div class="sci-label">UCL — Phillippa Lally, 2009</div>
+    <p>Automatiser un comportement prend entre 18 et 254 jours. Moyenne : 66. Le chiffre de 21 jours vient d'un chirurgien plasticien des années 60. Ce n'était pas une étude. C'était une anecdote dans un livre.</p>
+  </div>
+
+  <div class="sci">
+    <div class="sci-label">William Miller — Univ. Nouveau-Mexique, années 90</div>
+    <p>55 personnes interviewées. Alcooliques qui ont arrêté du jour au lendemain. Entrepreneurs qui ont tout quitté. Couples qui ont décidé en 5 minutes après 15 ans de stagnation. Soudain. Durable. Total. Miller a appelé ça le <strong>quantum change</strong>.</p>
+  </div>
+
+  <div class="warn">⚠️ Ce protocole prend 45 à 90 minutes. Il n'est pas confortable. Si tu veux juste comprendre le concept : referme cette page. Si tu veux le faire : continue.</div>
+
+  <div class="btns">
+    <button class="btn btn-p" onclick="go(1)">Commencer →</button>
+  </div>
+</div>
+
+<!-- S1: 4 CONDITIONS -->
+<div class="screen" id="s1">
+  <div class="label">Le seuil de bascule</div>
+  <h2>Les 4 conditions du<br><em>quantum change</em></h2>
+  <p>Elles doivent être réunies <strong>le même jour</strong>, dans cet ordre. C'est ce que Miller a retrouvé dans des centaines de cas depuis 30 ans.</p>
+
+  <div class="cond">
+    <div class="cond-n">1</div>
+    <div class="cond-title">Confrontation totale</div>
+    <p>Voir en face, avec précision, ce que coûte le statu quo dans 10 ans. Pas un sentiment vague. Une projection chirurgicale et douloureuse.</p>
+  </div>
+  <div class="cond">
+    <div class="cond-n">2</div>
+    <div class="cond-title">Vision claire et scénarisée</div>
+    <p>Pas "je veux être libre". Une scène précise : un mardi matin, un endroit, des gens, des raisons. Une vision appelle. Une envie ne fait rien.</p>
+  </div>
+  <div class="cond">
+    <div class="cond-n">3</div>
+    <div class="cond-title">Décision irréversible</div>
+    <p><em>Decidere</em> — couper. Pas une intention. Fermer les autres portes. Brûler le pont. Tant que la porte de retour est ouverte, le cerveau n'avance pas.</p>
+  </div>
+  <div class="cond">
+    <div class="cond-n">4</div>
+    <div class="cond-title">Action dans les 24h</div>
+    <p>Ton cerveau ne croit pas ce que tu dis. Il croit ce que tu fais. Si ton lendemain ressemble à tous tes autres lendemains, la révélation devient un souvenir.</p>
+  </div>
+
+  <div class="btns">
+    <button class="btn btn-s" onclick="go(0)">← Retour</button>
+    <button class="btn btn-p" onclick="go(2)">Commencer l'exercice →</button>
+  </div>
+</div>
+
+<!-- S2: ANTIVISION -->
+<div class="screen" id="s2">
+  <div class="label">Étape 1 / 4 — L'Antivision</div>
+  <h2>Ma vie dans 10 ans<br>si je ne change <em>rien</em></h2>
+  <p>La plupart des coachs te demandent de visualiser ta vie de rêve. <strong>Ça ne marche pas.</strong> Kahneman, 1979, prix Nobel : l'aversion à la perte est 2x plus puissante que l'attrait du gain. Ton cerveau réagit à la menace, pas au plaisir hypothétique.</p>
+  <p>Donc on fait l'inverse.</p>
+
+  <div class="warn"><strong>Règles :</strong> Pas de filtre. Pas de pudeur. Personne ne lira ça. Tu te projettes dans 10 ans en supposant que rien ne change — mêmes habitudes, mêmes peurs, mêmes excuses.</div>
+
+  <p><strong>Questions à traiter :</strong></p>
+  <ul class="qs">
+    <li>À quoi ressemble ton corps si tu continues exactement comme aujourd'hui ?</li>
+    <li>Ton compte en banque si tu continues à procrastiner de la même façon ?</li>
+    <li>Ta relation amoureuse si tu continues à éviter les mêmes conversations ?</li>
+    <li>Ce que tu diras à tes enfants (ou à toi-même) sur ce que tu n'as pas fait ?</li>
+    <li>Quelqu'un de ton secteur, ton âge, a osé. Comment tu te sens ?</li>
+  </ul>
+
+  <textarea id="ta1" placeholder="Écris ici. Sois brutal. Sois précis. C'est pour toi." oninput="wc('ta1','wc1','btn2',30)"></textarea>
+  <div class="wcount" id="wc1">0 mot — minimum 30 pour continuer</div>
+
+  <div class="btns">
+    <button class="btn btn-s" onclick="go(1)">← Retour</button>
+    <button class="btn btn-p" id="btn2" onclick="go(3)" disabled>Étape suivante →</button>
+  </div>
+</div>
+
+<!-- S3: FACTURE -->
+<div class="screen" id="s3">
+  <div class="label">Étape 2 / 4 — La Facture</div>
+  <h2>Ce que ça va te<br><em class="red">coûter</em></h2>
+  <p>Pas en argent. En vie.</p>
+  <p>Tu viens de décrire ta vie dans 10 ans. Maintenant tu chiffres la facture. En <strong>dignité, en regrets, en années.</strong></p>
+
+  <ul class="qs">
+    <li>Combien de matins tu vas te lever en sachant que tu n'es pas devenu ce que tu aurais pu devenir ?</li>
+    <li>Combien d'années avant que ce soit définitivement trop tard ?</li>
+    <li>La sensation exacte dans la poitrine quand tu verras quelqu'un de ton âge qui a osé.</li>
+    <li>Ce que tu vas te dire, seul, la nuit, dans 10 ans.</li>
+  </ul>
+
+  <div class="warn"><strong>Ne romantise rien.</strong> Ni la lucidité, ni la souffrance, ni la leçon. Ce n'est pas une leçon de vie. C'est une vraie facture. Chiffre-la. Nomme-la.</div>
+
+  <textarea id="ta2" placeholder="Écris la facture. En détail. Sans te ménager." oninput="wc('ta2','wc2','btn3',20)"></textarea>
+  <div class="wcount" id="wc2">0 mot — minimum 20 pour continuer</div>
+
+  <div class="btns">
+    <button class="btn btn-s" onclick="go(2)">← Retour</button>
+    <button class="btn btn-p" id="btn3" onclick="go(4)" disabled>Étape suivante →</button>
+  </div>
+</div>
+
+<!-- S4: TIMER -->
+<div class="screen" id="s4">
+  <div class="label">Étape 3 / 4 — Le Silence</div>
+  <h2>5 minutes.<br><em>Seul avec ce que tu as écrit.</em></h2>
+  <p>Lis ce qui est affiché ci-dessous <strong>à voix haute</strong>. Seul dans une pièce.</p>
+  <p>Puis pose le téléphone. Reste assis 5 minutes avec ce que tu ressens. Sans distraction. Sans musique. Sans personne.</p>
+  <div class="warn">La plupart des gens ouvrent leur téléphone au bout de 90 secondes. <strong>C'est dans ces 5 minutes que le cerveau recalcule l'équation.</strong> Reste.</div>
+
+  <div class="recap" id="recap">—</div>
+
+  <div class="timer-wrap">
+    <div class="timer-num" id="tnum">5:00</div>
+    <div class="timer-sub" id="tsub">Prêt à commencer</div>
+    <button class="btn-timer" id="tbtn" onclick="startTimer()">▶ Lancer les 5 minutes</button>
+    <p style="font-size:12px; color: var(--muted);">Lance le chrono. Ne touche plus à rien.</p>
+  </div>
+
+  <div class="btns">
+    <button class="btn btn-s" onclick="go(3)">← Retour</button>
+    <button class="btn btn-p" id="btn4" onclick="go(5)" disabled>Continuer →</button>
+  </div>
+</div>
+
+<!-- S5: ACTE IRRÉVERSIBLE -->
+<div class="screen" id="s5">
+  <div class="label">Étape 4 / 4 — L'Acte Irréversible</div>
+  <h2>Fermer la porte.<br><em class="red">Dans les 24h.</em></h2>
+  <p>Ton cerveau ne croit pas ce que tu dis. Il croit ce que tu fais.</p>
+  <p>Si ce soir ressemble à tous tes autres soirs, la révélation devient un souvenir. Tu redeviens quelqu'un qui ne fait pas les choses.</p>
+  <p><strong>Pose un acte irréversible dans les 24 heures.</strong> Quelque chose que tu ne peux pas défaire le lendemain.</p>
+
+  <div class="actions-grid">
+    <div class="act" onclick="selAct(this, 'Envoyer le mail que je repousse depuis des semaines — ')">
+      <div class="act-lbl">Communication</div>
+      Envoyer le mail que tu repousses depuis des semaines
+    </div>
+    <div class="act" onclick="selAct(this, 'Avoir la conversation difficile que j\'évite — ')">
+      <div class="act-lbl">Relation</div>
+      Avoir la conversation difficile que tu évites
+    </div>
+    <div class="act" onclick="selAct(this, 'Réserver le billet / signer le contrat — ')">
+      <div class="act-lbl">Engagement</div>
+      Réserver le billet / signer le contrat
+    </div>
+    <div class="act" onclick="selAct(this, 'Jeter / supprimer ce qui me retient — ')">
+      <div class="act-lbl">Rupture</div>
+      Jeter / supprimer ce qui te retient
+    </div>
+  </div>
+
+  <p><strong>Ton acte précis — lequel, quand, comment :</strong></p>
+  <textarea id="ta3" rows="4" style="min-height:110px;" placeholder="Pas 'j'essaie'. L'acte. Lequel. Quand. Comment." oninput="wc('ta3','wc3','btn5',5)"></textarea>
+  <div class="wcount" id="wc3">0 mot</div>
+
+  <div class="btns">
+    <button class="btn btn-s" onclick="go(4)">← Retour</button>
+    <button class="btn btn-p" id="btn5" onclick="go(6)" disabled>Voir le verdict →</button>
+  </div>
+</div>
+
+<!-- S6: VERDICT -->
+<div class="screen" id="s6">
+  <div class="label">Protocole complété</div>
+  <h2>Tu viens de faire ce que<br><em>90% ne feront jamais.</em></h2>
+
+  <p>Tu as confronté. Tu as quantifié. Tu as tenu 5 minutes. Tu as nommé l'acte.</p>
+  <p>Ce n'est pas le moment de te féliciter. C'est le moment d'agir.</p>
+
+  <div class="divider"></div>
+
+  <div class="sci">
+    <div class="sci-label">L'acte que tu as choisi</div>
+    <p id="fin-act" style="color: var(--white); font-style: italic;">—</p>
+  </div>
+
+  <p>La différence entre les 10% qui changent et les 90% qui regardent des vidéos — ce n'est pas l'intelligence, les ressources, les opportunités.</p>
+  <p><strong>C'est une feuille, un stylo, et trois heures prises alors qu'ils n'avaient pas le temps.</strong></p>
+  <p style="color: var(--red); font-weight: 500; margin-top: 12px;">L'acte irréversible. Dans les 24 heures. Pas ce week-end. Pas demain soir. Dans les 24 heures.</p>
+
+  <div class="choices">
+    <div class="choice yes" onclick="verdict('yes')">
+      <div class="choice-icon">⚡</div>
+      <div class="choice-title">Je le fais maintenant</div>
+      <div class="choice-desc">Je pose l'acte irréversible dans les prochaines heures.</div>
+    </div>
+    <div class="choice no" onclick="verdict('no')">
+      <div class="choice-icon">⏳</div>
+      <div class="choice-title">Je le ferai plus tard</div>
+      <div class="choice-desc">Ce week-end. Quand j'aurai du temps. Comme d'habitude.</div>
+    </div>
+  </div>
+
+  <div id="final-msg"></div>
+</div>
+
+<script>
+  let cur = 0;
+  let timerInt = null;
+  let tLeft = 300;
+  let timerGoing = false;
+  const total = 7;
+
+  function go(n) {
+    document.getElementById('s' + cur).classList.remove('active');
+    cur = n;
+    document.getElementById('s' + cur).classList.add('active');
+    const pct = (cur / (total - 1)) * 100;
+    document.getElementById('prog').style.width = pct + '%';
+    document.getElementById('stepin').textContent = String(cur + 1).padStart(2,'0') + ' / 06';
+    window.scrollTo(0, 0);
+    if (n === 4) loadRecap();
+    if (n === 6) {
+      const a = document.getElementById('ta3').value;
+      document.getElementById('fin-act').textContent = a || 'Non défini.';
+    }
+  }
+
+  function wc(tid, wid, bid, min) {
+    const t = document.getElementById(tid).value;
+    const w = t.trim() === '' ? 0 : t.trim().split(/\s+/).length;
+    const lbl = w + ' mot' + (w > 1 ? 's' : '');
+    document.getElementById(wid).textContent = w < min ? lbl + ' — minimum ' + min + ' pour continuer' : lbl;
+    if (bid) document.getElementById(bid).disabled = w < min;
+  }
+
+  function loadRecap() {
+    const t1 = document.getElementById('ta1').value;
+    const t2 = document.getElementById('ta2').value;
+    document.getElementById('recap').textContent = [t1, t2].filter(Boolean).join('\n\n---\n\n') || '—';
+    tLeft = 300;
+    timerGoing = false;
+    if (timerInt) clearInterval(timerInt);
+    document.getElementById('tnum').textContent = '5:00';
+    document.getElementById('tnum').classList.remove('urgent');
+    document.getElementById('tsub').textContent = 'Prêt à commencer';
+    document.getElementById('tbtn').textContent = '▶ Lancer les 5 minutes';
+    document.getElementById('tbtn').disabled = false;
+    document.getElementById('btn4').disabled = true;
+  }
+
+  function startTimer() {
+    if (timerGoing) return;
+    timerGoing = true;
+    document.getElementById('tbtn').textContent = '⏸ En cours — Ne touche pas au téléphone';
+    document.getElementById('tbtn').disabled = true;
+    document.getElementById('tsub').textContent = 'Reste assis. Respire.';
+
+    timerInt = setInterval(() => {
+      tLeft--;
+      const m = Math.floor(tLeft / 60);
+      const s = tLeft % 60;
+      document.getElementById('tnum').textContent = m + ':' + String(s).padStart(2,'0');
+      if (tLeft <= 60) {
+        document.getElementById('tnum').classList.add('urgent');
+        document.getElementById('tsub').textContent = 'Encore un peu. Reste.';
+      }
+      if (tLeft <= 0) {
+        clearInterval(timerInt);
+        document.getElementById('tnum').textContent = '0:00';
+        document.getElementById('tsub').textContent = "C'est fait.";
+        document.getElementById('tbtn').textContent = '✓ Terminé';
+        document.getElementById('tbtn').style.cssText = 'background:#1a4a2e;border-color:#1a4a2e;cursor:default;';
+        document.getElementById('btn4').disabled = false;
+        timerGoing = false;
+      }
+    }, 1000);
+  }
+
+  function selAct(el, txt) {
+    document.querySelectorAll('.act').forEach(e => e.classList.remove('sel'));
+    el.classList.add('sel');
+    const ta = document.getElementById('ta3');
+    ta.value = txt;
+    ta.focus();
+    wc('ta3','wc3','btn5',5);
+  }
+
+  function verdict(v) {
+    const msg = document.getElementById('final-msg');
+    if (v === 'yes') {
+      msg.innerHTML = '<div class="sci" style="margin-top:20px;"><div class="sci-label">✓ Décision actée</div><p style="color:var(--white)">Neurologiquement, tu viens de réécrire une partie de ton identité. Le cerveau croit ce que tu fais. Maintenant : lève-toi et fais-le.</p></div>';
+    } else {
+      msg.innerHTML = '<div class="sci" style="margin-top:20px;border-left-color:#444;background:rgba(255,255,255,0.02);"><div class="sci-label" style="color:#666">Dans 5 ans</div><p style="color:#888">Tu seras exactement là où tu es aujourd\'hui. Avec quelques vidéos de plus dans ta liste "à regarder plus tard". La porte était ouverte. Tu l\'as laissée se refermer.</p></div>';
+    }
+  }
+</script>
+</body>
+</html>
