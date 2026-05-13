@@ -74,50 +74,59 @@
 
   h2 {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(32px, 5vw, 46px);
+    font-size: clamp(30px, 5vw, 44px);
     font-weight: 700; line-height: 1.15;
     margin-bottom: 20px;
+  }
+
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px; font-weight: 700;
+    color: var(--white); margin: 28px 0 12px;
   }
 
   em { color: var(--accent); font-style: italic; }
   em.red { color: var(--red); }
 
   p {
-    font-size: 19px; line-height: 1.75;
-    color: #bbb; margin-bottom: 14px;
+    font-size: 19px; line-height: 1.8;
+    color: #bbb; margin-bottom: 16px;
   }
   p strong { color: var(--white); font-weight: 500; }
 
-  .divider {
-    width: 36px; height: 2px;
-    background: var(--red); margin: 28px 0;
-  }
+  .divider { width: 36px; height: 2px; background: var(--red); margin: 32px 0; }
 
   .sci {
     border-left: 2px solid var(--red);
     padding: 16px 20px;
     background: rgba(192,57,43,0.06);
-    margin-bottom: 14px;
+    margin-bottom: 16px;
   }
   .sci-label {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 10px; letter-spacing: 3px;
-    color: var(--red); text-transform: uppercase;
-    margin-bottom: 8px;
+    color: var(--red); text-transform: uppercase; margin-bottom: 8px;
   }
-  .sci p { font-size: 17px; color: #ccc; margin: 0; }
+  .sci p { font-size: 16px; color: #ccc; margin: 0; line-height: 1.75; }
 
   .warn {
     background: rgba(192,57,43,0.1);
     border: 1px solid rgba(192,57,43,0.35);
-    padding: 16px 20px; margin: 18px 0;
-    font-size: 17px; color: #ddd; line-height: 1.7;
+    padding: 18px 22px; margin: 20px 0;
+    font-size: 17px; color: #ddd; line-height: 1.75;
+  }
+
+  .info-box {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--grey-light);
+    padding: 18px 22px; margin: 18px 0;
+    font-size: 17px; color: #ccc; line-height: 1.75;
   }
 
   .cond {
     border: 1px solid var(--grey-light);
-    padding: 22px 22px 22px 60px;
-    margin-bottom: 12px; position: relative;
+    padding: 22px 22px 22px 64px;
+    margin-bottom: 14px; position: relative;
     transition: border-color 0.25s;
   }
   .cond:hover { border-color: var(--red); }
@@ -130,10 +139,14 @@
   .cond-title {
     font-family: 'IBM Plex Mono', monospace;
     font-size: 11px; letter-spacing: 3px;
-    color: var(--red); text-transform: uppercase;
-    margin-bottom: 8px;
+    color: var(--red); text-transform: uppercase; margin-bottom: 8px;
   }
   .cond p { font-size: 17px; margin: 0; }
+  .cond-example {
+    font-size: 14px; color: var(--muted);
+    font-style: italic; margin-top: 10px;
+    border-top: 1px solid #2a2a2a; padding-top: 10px;
+  }
 
   textarea {
     width: 100%;
@@ -141,13 +154,13 @@
     border: 1px solid var(--grey-light);
     color: var(--white);
     font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 18px; line-height: 1.7;
-    padding: 20px; resize: vertical;
-    min-height: 200px; margin-top: 14px;
+    font-size: 18px; line-height: 1.75;
+    padding: 22px; resize: vertical;
+    min-height: 220px; margin-top: 16px;
     outline: none; transition: border-color 0.25s;
   }
   textarea:focus { border-color: var(--red); }
-  textarea::placeholder { color: var(--muted); font-style: italic; }
+  textarea::placeholder { color: #444; font-style: italic; }
 
   .wcount {
     font-family: 'IBM Plex Mono', monospace;
@@ -155,15 +168,42 @@
     text-align: right; margin-top: 6px;
   }
 
-  ul.qs {
-    color: #999; font-size: 17px;
-    line-height: 2.2; margin: 12px 0 0 20px;
+  .privacy-note {
+    margin-top: 10px; font-size: 13px;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
   }
 
-  /* Timer */
-  .timer-wrap {
-    text-align: center; padding: 32px 0;
+  ul.qs {
+    color: #999; font-size: 17px;
+    line-height: 2.2; margin: 12px 0 0 22px;
   }
+
+  .example-block {
+    background: var(--grey);
+    border-left: 3px solid #333;
+    padding: 18px 22px; margin: 22px 0;
+  }
+  .example-block-label {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 3px;
+    color: var(--muted); text-transform: uppercase; margin-bottom: 14px;
+  }
+  .example-item {
+    font-size: 16px; color: #aaa;
+    font-style: italic; line-height: 1.7;
+    padding: 12px 0;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .example-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .example-item span {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--red);
+    text-transform: uppercase; letter-spacing: 2px;
+    display: block; margin-bottom: 5px; font-style: normal;
+  }
+
+  .timer-wrap { text-align: center; padding: 32px 0; }
   .timer-num {
     font-family: 'Playfair Display', serif;
     font-size: clamp(80px, 18vw, 130px);
@@ -180,24 +220,21 @@
   .recap {
     background: var(--grey);
     border-left: 3px solid var(--red);
-    padding: 18px 22px; margin-bottom: 20px;
-    font-size: 17px; color: #bbb;
-    font-style: italic; line-height: 1.75;
-    max-height: 150px; overflow-y: auto;
+    padding: 20px 24px; margin-bottom: 20px;
+    font-size: 16px; color: #bbb;
+    font-style: italic; line-height: 1.8;
+    max-height: 160px; overflow-y: auto;
     scrollbar-width: thin; scrollbar-color: #333 transparent;
   }
 
-  /* Actions grid */
   .actions-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px; margin: 14px 0;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 12px; margin: 16px 0;
   }
   .act {
     border: 1px solid var(--grey-light);
-    padding: 14px 16px; font-size: 16px;
-    color: #bbb; cursor: pointer;
-    transition: all 0.2s;
+    padding: 16px 18px; font-size: 16px;
+    color: #bbb; cursor: pointer; transition: all 0.2s;
   }
   .act:hover { border-color: var(--red); color: var(--white); background: rgba(192,57,43,0.07); }
   .act.sel { border-color: var(--red); background: rgba(192,57,43,0.14); color: var(--white); }
@@ -207,10 +244,9 @@
     color: var(--red); text-transform: uppercase; margin-bottom: 6px;
   }
 
-  /* Final choice */
   .choices {
     display: grid; grid-template-columns: 1fr 1fr;
-    gap: 14px; margin-top: 28px;
+    gap: 16px; margin-top: 28px;
   }
   .choice {
     border: 1px solid var(--grey-light);
@@ -227,8 +263,7 @@
   }
   .choice-desc { font-size: 15px; color: var(--muted); line-height: 1.5; }
 
-  /* Buttons */
-  .btns { display: flex; align-items: center; margin-top: 28px; gap: 12px; flex-wrap: wrap; }
+  .btns { display: flex; align-items: center; margin-top: 32px; gap: 12px; flex-wrap: wrap; }
 
   .btn {
     font-family: 'IBM Plex Mono', monospace;
@@ -253,94 +288,155 @@
   .btn-timer:hover:not(:disabled) { background: var(--red); border-color: var(--red); }
   .btn-timer:disabled { cursor: not-allowed; opacity: 0.6; }
 
-  #final-msg { margin-top: 22px; }
+  .stats-row { display: flex; gap: 0; margin: 28px 0; flex-wrap: wrap; }
+  .stat-item {
+    flex: 1; min-width: 140px;
+    border: 1px solid var(--grey-light);
+    padding: 20px 16px; text-align: center;
+    border-right: none;
+  }
+  .stat-item:last-child { border-right: 1px solid var(--grey-light); }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 900;
+    color: var(--red); display: block; line-height: 1; margin-bottom: 6px;
+  }
+  .stat-lbl {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; color: var(--muted);
+    letter-spacing: 2px; text-transform: uppercase;
+  }
+
+  #final-msg { margin-top: 24px; }
 </style>
 </head>
 <body>
 
 <div class="progress-track"><div class="progress-fill" id="prog"></div></div>
-<div class="step-indicator" id="stepin">01 / 06</div>
+<div class="step-indicator" id="stepin">01 / 07</div>
 
-<!-- S0: INTRO -->
+<!-- S0: ACCROCHE -->
 <div class="screen active" id="s0">
-  <div class="label">Protocole Quantum Change — William Miller, 1994</div>
-  <h1>Une journée.<br><em>Toute ta vie.</em></h1>
-  <p>La transformation n'est pas progressive. Elle est <strong>soudaine, totale, irréversible.</strong></p>
-  <p>Ce protocole interactif te fait traverser les 4 conditions du quantum change. Ce n'est pas une lecture. C'est un exercice.</p>
+  <div class="label">Protocole interactif — Quantum Change</div>
+  <h1>Tu n'as pas<br>un problème de<br><em>discipline.</em></h1>
+  <p>Tu as un problème d'équation. Ton cerveau calcule en permanence si le coût du changement est inférieur au coût de rester là où tu es. Et tant que ce calcul penche du mauvais côté — <strong>aucune méthode au monde ne marche.</strong></p>
+  <p>Pas les habitudes du matin. Pas les programmes de 21 jours. Pas les routines de productivité. Pas les livres de développement personnel que tu as achetés et jamais terminés.</p>
+  <p>Ce protocole ne te vend pas une méthode de plus. Il te fait traverser le seul processus qui a été scientifiquement documenté pour inverser cette équation — <strong>en une journée.</strong></p>
 
   <div class="divider"></div>
 
   <div class="sci">
-    <div class="sci-label">UCL — Phillippa Lally, 2009</div>
-    <p>Automatiser un comportement prend entre 18 et 254 jours. Moyenne : 66. Le chiffre de 21 jours vient d'un chirurgien plasticien des années 60. Ce n'était pas une étude. C'était une anecdote dans un livre.</p>
+    <div class="sci-label">Daniel Kahneman — Prix Nobel d'économie, 1979</div>
+    <p>La douleur de perdre quelque chose est <strong>deux fois plus puissante</strong> que le plaisir d'en gagner autant. Ce n'est pas une opinion — c'est câblé dans ton cerveau depuis des millénaires. C'est pour ça que visualiser ta vie de rêve ne suffit jamais : ton cerveau ne réagit pas assez fort au plaisir hypothétique. Il réagit à la perte. À la menace. Au coût réel de l'inaction.</p>
   </div>
 
   <div class="sci">
-    <div class="sci-label">William Miller — Univ. Nouveau-Mexique, années 90</div>
-    <p>55 personnes interviewées. Alcooliques qui ont arrêté du jour au lendemain. Entrepreneurs qui ont tout quitté. Couples qui ont décidé en 5 minutes après 15 ans de stagnation. Soudain. Durable. Total. Miller a appelé ça le <strong>quantum change</strong>.</p>
+    <div class="sci-label">William Miller — Université du Nouveau-Mexique, années 90</div>
+    <p>Ce chercheur spécialisé dans les addictions a interviewé 55 personnes qui avaient toutes basculé du jour au lendemain. Des alcooliques qui n'ont plus jamais touché un verre. Des entrepreneurs qui ont tout quitté sans regarder en arrière. Des gens qui se détestaient depuis 30 ans et qui ont arrêté en une nuit. Il a appelé ça le <strong>quantum change</strong> — et il a isolé les 4 conditions exactes qui le déclenchent.</p>
   </div>
 
-  <div class="warn">⚠️ Ce protocole prend 45 à 90 minutes. Il n'est pas confortable. Si tu veux juste comprendre le concept : referme cette page. Si tu veux le faire : continue.</div>
+  <div class="warn">
+    ⏱ Ce protocole prend entre 45 minutes et 2 heures. Il n'est pas confortable. Si tu cherches quelque chose de rapide et d'indolore — ferme cette page. Si tu es prêt à regarder les choses en face : continue.
+  </div>
 
   <div class="btns">
-    <button class="btn btn-p" onclick="go(1)">Commencer →</button>
+    <button class="btn btn-p" onclick="go(1)">Je comprends — Continuer →</button>
   </div>
 </div>
 
-<!-- S1: 4 CONDITIONS -->
+<!-- S1: POURQUOI ÇA ÉCHOUE + 4 CONDITIONS -->
 <div class="screen" id="s1">
-  <div class="label">Le seuil de bascule</div>
-  <h2>Les 4 conditions du<br><em>quantum change</em></h2>
-  <p>Elles doivent être réunies <strong>le même jour</strong>, dans cet ordre. C'est ce que Miller a retrouvé dans des centaines de cas depuis 30 ans.</p>
+  <div class="label">Avant de commencer</div>
+  <h2>Pourquoi tout ce que<br>tu as essayé a <em class="red">échoué</em></h2>
+
+  <p>Ce n'est pas parce que tu manques de volonté. Ce n'est pas parce que tu n'as pas trouvé la bonne méthode. Et ce n'est certainement pas parce que tu n'es pas capable de changer.</p>
+  <p>C'est parce que <strong>la transformation durable ne fonctionne pas de façon progressive.</strong> Elle fonctionne par bascule — soudaine, totale, irréversible.</p>
+
+  <div class="info-box">
+    Phillippa Lally, université de Londres, 2009 : automatiser un nouveau comportement prend en moyenne <strong>66 jours</strong> — et entre 18 et 254 jours selon les individus. Le chiffre populaire de "21 jours" vient d'un chirurgien plasticien des années 60 qui avait observé que ses patients mettaient 3 semaines à s'habituer à leur nouveau visage après une opération. Ce n'était pas une étude. C'était une anecdote dans un livre. Et toute une industrie a construit son modèle commercial là-dessus pendant 60 ans.
+  </div>
+
+  <p>Mais le vrai problème n'est pas la durée. C'est que <strong>90% des gens n'arrivent jamais à tenir même 18 jours</strong> — parce que leur cerveau n'est pas encore convaincu que changer vaut le coût de changer.</p>
+
+  <h3>Les 4 conditions du quantum change</h3>
+  <p>Miller a retrouvé ces 4 conditions dans la quasi-totalité des 55 cas étudiés. Elles doivent être réunies <strong>le même jour, dans cet ordre.</strong></p>
 
   <div class="cond">
     <div class="cond-n">1</div>
-    <div class="cond-title">Confrontation totale</div>
-    <p>Voir en face, avec précision, ce que coûte le statu quo dans 10 ans. Pas un sentiment vague. Une projection chirurgicale et douloureuse.</p>
+    <div class="cond-title">Confrontation totale avec le coût du statu quo</div>
+    <p>Pas un sentiment vague que "ça ne va pas vraiment". Une projection précise, douloureuse, dans 10 ans — si rien ne change aujourd'hui.</p>
+    <div class="cond-example">Ex : se voir à 52 ans, même business qui stagne, mêmes dettes, en train d'expliquer à ses enfants pourquoi papa n'a jamais osé lancer ce qu'il voulait lancer.</div>
   </div>
+
   <div class="cond">
     <div class="cond-n">2</div>
-    <div class="cond-title">Vision claire et scénarisée</div>
-    <p>Pas "je veux être libre". Une scène précise : un mardi matin, un endroit, des gens, des raisons. Une vision appelle. Une envie ne fait rien.</p>
+    <div class="cond-title">Vision claire et scénarisée de l'autre vie</div>
+    <p>Pas "je veux être libre" ou "je veux gagner plus". Une scène concrète — un mardi matin précis, un endroit réel, des gens réels, une raison précise.</p>
+    <div class="cond-example">Ex : se voir à 7h du matin dans un café à Lisbonne, travailler sur un projet qui compte vraiment, sans réunion imposée, sans compte à rendre à personne d'autre que soi.</div>
   </div>
+
   <div class="cond">
     <div class="cond-n">3</div>
     <div class="cond-title">Décision irréversible</div>
-    <p><em>Decidere</em> — couper. Pas une intention. Fermer les autres portes. Brûler le pont. Tant que la porte de retour est ouverte, le cerveau n'avance pas.</p>
+    <p><em>Decidere</em> en latin : couper. Pas une intention. Pas "j'essaie". Brûler le pont. Tant que la porte de retour reste ouverte, le cerveau optimise pour la sécurité — pas pour le futur.</p>
+    <div class="cond-example">Ex : envoyer le mail, résilier le contrat, avoir la conversation — pas "y réfléchir encore ce week-end".</div>
   </div>
+
   <div class="cond">
     <div class="cond-n">4</div>
-    <div class="cond-title">Action dans les 24h</div>
-    <p>Ton cerveau ne croit pas ce que tu dis. Il croit ce que tu fais. Si ton lendemain ressemble à tous tes autres lendemains, la révélation devient un souvenir.</p>
+    <div class="cond-title">Action concrète dans les 24 heures</div>
+    <p>Ton cerveau ne croit pas ce que tu dis. Il croit ce que tu fais. Si le lendemain ressemble à tous les autres lendemains, la révélation du jour devient un souvenir de la semaine prochaine.</p>
+    <div class="cond-example">Ex : le dimanche soir tu décides — mais ton lundi doit être objectivement différent de tous tes autres lundis.</div>
   </div>
 
   <div class="btns">
     <button class="btn btn-s" onclick="go(0)">← Retour</button>
-    <button class="btn btn-p" onclick="go(2)">Commencer l'exercice →</button>
+    <button class="btn btn-p" onclick="go(2)">Commencer le protocole →</button>
   </div>
 </div>
 
 <!-- S2: ANTIVISION -->
 <div class="screen" id="s2">
-  <div class="label">Étape 1 / 4 — L'Antivision</div>
+  <div class="label">Étape 1 / 4 — La Confrontation</div>
   <h2>Ma vie dans 10 ans<br>si je ne change <em>rien</em></h2>
-  <p>La plupart des coachs te demandent de visualiser ta vie de rêve. <strong>Ça ne marche pas.</strong> Kahneman, 1979, prix Nobel : l'aversion à la perte est 2x plus puissante que l'attrait du gain. Ton cerveau réagit à la menace, pas au plaisir hypothétique.</p>
-  <p>Donc on fait l'inverse.</p>
 
-  <div class="warn"><strong>Règles :</strong> Pas de filtre. Pas de pudeur. Personne ne lira ça. Tu te projettes dans 10 ans en supposant que rien ne change — mêmes habitudes, mêmes peurs, mêmes excuses.</div>
+  <p>La plupart des exercices de développement personnel te demandent de visualiser ta vie de rêve. <strong>Ça ne marche pas</strong> — parce que ton cerveau ne réagit pas assez fort au plaisir futur et hypothétique.</p>
+  <p>Ce qu'il comprend, par contre, c'est la menace. La perte concrète. La facture qui arrive si tu continues exactement comme aujourd'hui.</p>
+  <p>Cet exercice s'appelle l'<strong>antivision</strong>. Tu vas te projeter dans 10 ans — non pas dans ta vie idéale, mais dans la continuation exacte de ta vie actuelle. Mêmes habitudes. Mêmes peurs. Mêmes procrastinations. Mêmes conversations évitées.</p>
 
-  <p><strong>Questions à traiter :</strong></p>
+  <div class="warn">
+    <strong>Règle absolue :</strong> pas de filtre, pas de pudeur. Personne ne lira ce que tu écris — ni maintenant, ni jamais. Tout reste uniquement dans ton navigateur. Sois chirurgical. Sois brutal. Ce n'est pas un exercice pour te faire souffrir — c'est un exercice pour voir clairement.
+  </div>
+
+  <p><strong>Questions pour rentrer dedans :</strong></p>
   <ul class="qs">
-    <li>À quoi ressemble ton corps si tu continues exactement comme aujourd'hui ?</li>
-    <li>Ton compte en banque si tu continues à procrastiner de la même façon ?</li>
-    <li>Ta relation amoureuse si tu continues à éviter les mêmes conversations ?</li>
-    <li>Ce que tu diras à tes enfants (ou à toi-même) sur ce que tu n'as pas fait ?</li>
-    <li>Quelqu'un de ton secteur, ton âge, a osé. Comment tu te sens ?</li>
+    <li>À quoi ressemble ton corps dans 10 ans si tu continues à manger, dormir et bouger exactement comme aujourd'hui ?</li>
+    <li>Quel est l'état précis de tes finances si tu continues à remettre les mêmes décisions à plus tard ?</li>
+    <li>Ta relation amoureuse — ou ton absence de relation — si tu continues à éviter les mêmes conversations ?</li>
+    <li>Ton business ou ta carrière si tu restes dans la même zone de confort pendant 10 ans de plus ?</li>
+    <li>Quelqu'un de ton secteur, de ton âge, a osé ce que toi tu n'as pas osé. Comment tu te sens quand tu le vois réussir ?</li>
+    <li>Ce que tu diras à tes enfants — ou à toi-même — quand on te demandera pourquoi tu n'as pas fait ce que tu disais vouloir faire.</li>
   </ul>
 
-  <textarea id="ta1" placeholder="Écris ici. Sois brutal. Sois précis. C'est pour toi." oninput="wc('ta1','wc1','btn2',30)"></textarea>
+  <div class="example-block">
+    <div class="example-block-label">Exemples pour t'inspirer — adapte à ta réalité, ne copie pas</div>
+    <div class="example-item">
+      <span>Business / carrière</span>
+      "Dans 10 ans j'ai toujours le même chiffre d'affaires. J'ai arrêté de me mentir que j'allais scaler — je n'ai jamais lancé la formation que j'avais en tête depuis 3 ans. Je regarde sur LinkedIn les gens qui ont osé en 2025 et je me dis que j'aurais pu."
+    </div>
+    <div class="example-item">
+      <span>Santé / corps</span>
+      "J'ai 20 kilos de plus. Je me dis depuis 6 ans que je vais m'y mettre sérieusement. Mes genoux commencent à souffrir. Mes enfants ont un père/une mère qui parle mais ne fait rien — et ils le savent."
+    </div>
+    <div class="example-item">
+      <span>Relation / vie personnelle</span>
+      "On vit toujours ensemble mais on ne se parle plus vraiment. J'ai évité la conversation pendant 10 ans. On est devenus des colocataires polis qui regardent des séries le soir en silence."
+    </div>
+  </div>
+
+  <textarea id="ta1" placeholder="Écris ici. Ta vie dans 10 ans si rien ne change. Sois précis. Sois brutal. C'est pour toi." oninput="wc('ta1','wc1','btn2',30)"></textarea>
   <div class="wcount" id="wc1">0 mot — minimum 30 pour continuer</div>
-  <div style="margin-top:10px; font-size:13px; color: var(--muted); font-family:'IBM Plex Mono',monospace; letter-spacing:0.5px;">🔒 Ce que tu écris reste uniquement dans ton navigateur. Rien n'est envoyé, rien n'est enregistré. Si tu fermes cet onglet, tout disparaît.</div>
+  <div class="privacy-note">🔒 Ce que tu écris reste uniquement dans ton navigateur. Rien n'est envoyé ni enregistré nulle part. Si tu fermes cet onglet, tout disparaît.</div>
 
   <div class="btns">
     <button class="btn btn-s" onclick="go(1)">← Retour</button>
@@ -351,22 +447,41 @@
 <!-- S3: FACTURE -->
 <div class="screen" id="s3">
   <div class="label">Étape 2 / 4 — La Facture</div>
-  <h2>Ce que ça va te<br><em class="red">coûter</em></h2>
-  <p>Pas en argent. En vie.</p>
-  <p>Tu viens de décrire ta vie dans 10 ans. Maintenant tu chiffres la facture. En <strong>dignité, en regrets, en années.</strong></p>
+  <h2>Ce que ça va<br>vraiment te <em class="red">coûter</em></h2>
 
+  <p>Tu viens de décrire à quoi ressemble ta vie dans 10 ans. Maintenant tu chiffres ce qu'elle te coûte. <strong>Pas en argent — en vie.</strong></p>
+  <p>C'est l'étape que les gens évitent le plus. Parce que tant que le coût reste dans le flou, le cerveau peut continuer à faire semblant que "ça ira". Cette étape rend le coût visible, tangible, quantifiable — comme une vraie facture qu'on ne peut plus ignorer.</p>
+
+  <div class="info-box">
+    Ce n'est pas un exercice de culpabilité. C'est un exercice de lucidité froide. Tu ne te juges pas — tu regardes ce que te coûte concrètement l'inaction, avec la même clarté que tu regarderais un relevé bancaire.
+  </div>
+
+  <p><strong>Questions pour aller au fond :</strong></p>
   <ul class="qs">
-    <li>Combien de matins tu vas te lever en sachant que tu n'es pas devenu ce que tu aurais pu devenir ?</li>
-    <li>Combien d'années avant que ce soit définitivement trop tard ?</li>
-    <li>La sensation exacte dans la poitrine quand tu verras quelqu'un de ton âge qui a osé.</li>
-    <li>Ce que tu vas te dire, seul, la nuit, dans 10 ans.</li>
+    <li>Combien de matins vas-tu te lever en sachant que tu n'es pas devenu ce que tu aurais pu devenir ?</li>
+    <li>Combien d'années il te reste avant que certaines choses soient définitivement trop tard ?</li>
+    <li>La sensation exacte dans la poitrine quand tu verras quelqu'un de ton âge, de ton secteur, qui a osé ce que toi tu n'as pas osé.</li>
+    <li>Ce que tu vas te dire à toi-même dans 10 ans, seul, la nuit, quand tu seras honnête avec toi-même.</li>
+    <li>Le regard de tes proches — est-ce qu'ils te voient comme quelqu'un qui fait, ou comme quelqu'un qui dit ?</li>
   </ul>
 
-  <div class="warn"><strong>Ne romantise rien.</strong> Ni la lucidité, ni la souffrance, ni la leçon. Ce n'est pas une leçon de vie. C'est une vraie facture. Chiffre-la. Nomme-la.</div>
+  <div class="example-block">
+    <div class="example-block-label">Exemples</div>
+    <div class="example-item">
+      <span>Business</span>
+      "Il me reste peut-être 8 à 10 ans d'énergie maximale pour construire quelque chose. Si je n'agis pas maintenant, j'aurai 50 ans et je serai encore au même endroit, avec le même discours. J'aurai regardé trois générations de créateurs passer devant moi."
+    </div>
+    <div class="example-item">
+      <span>Personnel</span>
+      "Chaque matin où je ne dis pas ce que je pense vraiment, je me mens un peu plus à moi-même. Dans 10 ans ce mensonge sera devenu ma normalité. Je ne sentirai même plus la différence entre ce que je veux vraiment et ce que je fais."
+    </div>
+  </div>
 
-  <textarea id="ta2" placeholder="Écris la facture. En détail. Sans te ménager." oninput="wc('ta2','wc2','btn3',20)"></textarea>
+  <div class="warn"><strong>Ne romantise rien.</strong> Ni la souffrance, ni la lucidité, ni la "belle leçon de vie". Ce n'est pas poétique. C'est une vraie facture. Chiffre-la. Nomme-la. En années, en matins, en sensations précises.</div>
+
+  <textarea id="ta2" placeholder="Écris la facture. En années perdues, en matins difficiles, en sensations. Sans te ménager." oninput="wc('ta2','wc2','btn3',20)"></textarea>
   <div class="wcount" id="wc2">0 mot — minimum 20 pour continuer</div>
-  <div style="margin-top:10px; font-size:13px; color: var(--muted); font-family:'IBM Plex Mono',monospace; letter-spacing:0.5px;">🔒 Ce que tu écris reste uniquement dans ton navigateur. Rien n'est envoyé, rien n'est enregistré. Si tu fermes cet onglet, tout disparaît.</div>
+  <div class="privacy-note">🔒 Ce que tu écris reste uniquement dans ton navigateur. Rien n'est envoyé ni enregistré nulle part. Si tu fermes cet onglet, tout disparaît.</div>
 
   <div class="btns">
     <button class="btn btn-s" onclick="go(2)">← Retour</button>
@@ -378,17 +493,29 @@
 <div class="screen" id="s4">
   <div class="label">Étape 3 / 4 — Le Silence</div>
   <h2>5 minutes.<br><em>Seul avec ce que tu as écrit.</em></h2>
-  <p>Lis ce qui est affiché ci-dessous <strong>à voix haute</strong>. Seul dans une pièce.</p>
-  <p>Puis pose le téléphone. Reste assis 5 minutes avec ce que tu ressens. Sans distraction. Sans musique. Sans personne.</p>
-  <div class="warn">La plupart des gens ouvrent leur téléphone au bout de 90 secondes. <strong>C'est dans ces 5 minutes que le cerveau recalcule l'équation.</strong> Reste.</div>
 
+  <p>Tu viens de mettre des mots sur quelque chose que tu savais mais que tu t'autorisais à garder dans le flou. C'est inconfortable. C'est exactement pour ça que ça fonctionne.</p>
+  <p>C'est dans ce moment d'inconfort que le cerveau recalcule l'équation. Pas dans la lecture. Pas dans la réflexion abstraite. Dans le fait de rester assis avec ce que tu as écrit, sans fuir.</p>
+
+  <div class="info-box">
+    <strong>Voici ce que tu vas faire, dans cet ordre :</strong><br><br>
+    <strong>1.</strong> Lis à voix haute ce qui est affiché ci-dessous. Seul dans une pièce. Pas dans ta tête — à voix haute, lentement.<br><br>
+    <strong>2.</strong> Lance le chronomètre.<br><br>
+    <strong>3.</strong> Pose ton téléphone face contre la table. Reste assis 5 minutes avec ce que tu ressens. Sans distraction. Sans musique. Sans ouvrir un autre onglet. Sans vérifier tes messages.
+  </div>
+
+  <div class="warn">
+    La majorité des gens ouvrent leur téléphone au bout de 90 secondes. Ils trouvent une raison urgente de se lever, de vérifier quelque chose, de faire autre chose que de rester avec eux-mêmes. C'est précisément le mécanisme d'évitement qui t'a maintenu là où tu es. <strong>Reste. 5 minutes. C'est tout.</strong>
+  </div>
+
+  <p style="margin-bottom: 8px;"><strong>Ce que tu as écrit :</strong></p>
   <div class="recap" id="recap">—</div>
 
   <div class="timer-wrap">
     <div class="timer-num" id="tnum">5:00</div>
-    <div class="timer-sub" id="tsub">Prêt à commencer</div>
+    <div class="timer-sub" id="tsub">Lis d'abord à voix haute. Puis lance.</div>
     <button class="btn-timer" id="tbtn" onclick="startTimer()">▶ Lancer les 5 minutes</button>
-    <p style="font-size:12px; color: var(--muted);">Lance le chrono. Ne touche plus à rien.</p>
+    <p style="font-size:14px; color: var(--muted); max-width: 400px; margin: 0 auto; line-height:1.6;">Une fois lancé, ne touche plus à rien. Reste avec toi-même.</p>
   </div>
 
   <div class="btns">
@@ -399,12 +526,20 @@
 
 <!-- S5: ACTE IRRÉVERSIBLE -->
 <div class="screen" id="s5">
-  <div class="label">Étape 4 / 4 — L'Acte Irréversible</div>
-  <h2>Fermer la porte.<br><em class="red">Dans les 24h.</em></h2>
-  <p>Ton cerveau ne croit pas ce que tu dis. Il croit ce que tu fais.</p>
-  <p>Si ce soir ressemble à tous tes autres soirs, la révélation devient un souvenir. Tu redeviens quelqu'un qui ne fait pas les choses.</p>
-  <p><strong>Pose un acte irréversible dans les 24 heures.</strong> Quelque chose que tu ne peux pas défaire le lendemain.</p>
+  <div class="label">Étape 4 / 4 — La Décision</div>
+  <h2>Fermer la porte.<br><em class="red">Dans les 24 heures.</em></h2>
 
+  <p>Tu as confronté. Tu as quantifié. Tu as tenu 5 minutes avec toi-même sans fuir. C'est déjà plus que 90% des gens ne feront jamais.</p>
+  <p>Maintenant vient la partie qui fait toute la différence entre une révélation et un vrai changement.</p>
+  <p>Ton cerveau ne croit pas ce que tu dis. <strong>Il croit ce que tu fais.</strong> Si ce soir ressemble à tous tes autres soirs, dans 72 heures ce protocole sera un souvenir agréable que tu n'auras pas mis en pratique. Dans 3 semaines tu n'y penseras plus.</p>
+  <p>Mais si, dans les prochaines 24 heures, tu poses un acte concret et irréversible — quelque chose que ton "toi d'avant" n'aurait pas fait — ton cerveau commence à réécrire qui tu es.</p>
+
+  <div class="info-box">
+    <strong>Un acte irréversible, c'est quoi exactement ?</strong><br><br>
+    C'est quelque chose que tu ne peux pas défaire discrètement le lendemain matin. Quelque chose qui ferme une porte derrière toi. Ça peut être petit ou grand — ce qui compte, c'est l'irréversibilité. Tu ne peux pas revenir en arrière comme si rien ne s'était passé.
+  </div>
+
+  <p><strong>Choisis ou inspire-toi :</strong></p>
   <div class="actions-grid">
     <div class="act" onclick="selAct(this, 'Envoyer le mail que je repousse depuis des semaines — ')">
       <div class="act-lbl">Communication</div>
@@ -414,20 +549,28 @@
       <div class="act-lbl">Relation</div>
       Avoir la conversation difficile que tu évites
     </div>
-    <div class="act" onclick="selAct(this, 'Réserver le billet / signer le contrat — ')">
-      <div class="act-lbl">Engagement</div>
-      Réserver le billet / signer le contrat
+    <div class="act" onclick="selAct(this, 'Réserver / signer / payer l\'acompte — rendre la décision réelle et financièrement engagée — ')">
+      <div class="act-lbl">Engagement financier</div>
+      Réserver, signer, payer — rendre la décision réelle
     </div>
-    <div class="act" onclick="selAct(this, 'Jeter / supprimer ce qui me retient — ')">
+    <div class="act" onclick="selAct(this, 'Annoncer ma décision à quelqu\'un qui va me tenir responsable — ')">
+      <div class="act-lbl">Engagement public</div>
+      Annoncer ta décision à quelqu'un qui va te tenir responsable
+    </div>
+    <div class="act" onclick="selAct(this, 'Résilier / supprimer / jeter ce qui me retient — ')">
       <div class="act-lbl">Rupture</div>
-      Jeter / supprimer ce qui te retient
+      Résilier, supprimer, jeter ce qui te retient
+    </div>
+    <div class="act" onclick="selAct(this, 'Prendre le rendez-vous / m\'inscrire / commencer concrètement — ')">
+      <div class="act-lbl">Premier pas</div>
+      Prendre le rendez-vous, s'inscrire, commencer
     </div>
   </div>
 
-  <p><strong>Ton acte précis — lequel, quand, comment :</strong></p>
-  <textarea id="ta3" rows="4" style="min-height:110px;" placeholder="Pas 'j'essaie'. L'acte. Lequel. Quand. Comment." oninput="wc('ta3','wc3','btn5',5)"></textarea>
-  <div class="wcount" id="wc3">0 mot</div>
-  <div style="margin-top:10px; font-size:13px; color: var(--muted); font-family:'IBM Plex Mono',monospace; letter-spacing:0.5px;">🔒 Ce que tu écris reste uniquement dans ton navigateur. Rien n'est envoyé, rien n'est enregistré. Si tu fermes cet onglet, tout disparaît.</div>
+  <p style="margin-top:12px;"><strong>Décris l'acte précis que tu vas poser :</strong></p>
+  <textarea id="ta3" rows="4" style="min-height:130px;" placeholder="Pas 'j'essaie' ou 'je vais voir'. L'acte exact. Lequel concrètement. Aujourd'hui ou demain — à quelle heure. Comment précisément." oninput="wc('ta3','wc3','btn5',10)"></textarea>
+  <div class="wcount" id="wc3">0 mot — minimum 10 pour continuer</div>
+  <div class="privacy-note">🔒 Ce que tu écris reste uniquement dans ton navigateur. Rien n'est envoyé ni enregistré nulle part. Si tu fermes cet onglet, tout disparaît.</div>
 
   <div class="btns">
     <button class="btn btn-s" onclick="go(4)">← Retour</button>
@@ -440,25 +583,40 @@
   <div class="label">Protocole complété</div>
   <h2>Tu viens de faire ce que<br><em>90% ne feront jamais.</em></h2>
 
-  <p>Tu as confronté. Tu as quantifié. Tu as tenu 5 minutes. Tu as nommé l'acte.</p>
-  <p>Ce n'est pas le moment de te féliciter. C'est le moment d'agir.</p>
+  <p>La majorité des gens qui tombent sur ce protocole vont l'enregistrer, le mettre de côté, l'envoyer à quelqu'un d'autre. Ils se diront qu'ils le feront ce week-end. Ce week-end deviendra le suivant. Le suivant deviendra "quand j'aurai un peu de temps". Et "quand j'aurai un peu de temps" ne viendra jamais.</p>
+  <p>Toi, tu l'as fait. Tu es allé jusqu'au bout.</p>
 
   <div class="divider"></div>
 
   <div class="sci">
-    <div class="sci-label">L'acte que tu as choisi</div>
-    <p id="fin-act" style="color: var(--white); font-style: italic;">—</p>
+    <div class="sci-label">L'acte que tu t'es engagé à poser</div>
+    <p id="fin-act" style="color: var(--white); font-style: italic; font-size: 18px;">—</p>
   </div>
 
-  <p>La différence entre les 10% qui changent et les 90% qui regardent des vidéos — ce n'est pas l'intelligence, les ressources, les opportunités.</p>
+  <div class="stats-row">
+    <div class="stat-item">
+      <span class="stat-num">24h</span>
+      <span class="stat-lbl">Pour poser l'acte</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">90%</span>
+      <span class="stat-lbl">Ne le feront pas</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">1</span>
+      <span class="stat-lbl">Décision qui change tout</span>
+    </div>
+  </div>
+
+  <p>La différence entre les 10% qui changent et les 90% qui regardent des vidéos de développement personnel — ce n'est pas l'intelligence, pas les ressources, pas les opportunités.</p>
   <p><strong>C'est une feuille, un stylo, et trois heures prises alors qu'ils n'avaient pas le temps.</strong></p>
-  <p style="color: var(--red); font-weight: 500; margin-top: 12px;">L'acte irréversible. Dans les 24 heures. Pas ce week-end. Pas demain soir. Dans les 24 heures.</p>
+  <p style="color: var(--red); font-weight: 500; margin-top: 4px;">L'acte irréversible. Dans les 24 heures. Pas ce week-end. Pas demain soir si c'est dans 3 jours. Dans les 24 heures.</p>
 
   <div class="choices">
     <div class="choice yes" onclick="verdict('yes')">
       <div class="choice-icon">⚡</div>
       <div class="choice-title">Je le fais maintenant</div>
-      <div class="choice-desc">Je pose l'acte irréversible dans les prochaines heures.</div>
+      <div class="choice-desc">Je pose l'acte irréversible dans les prochaines heures. Pas demain.</div>
     </div>
     <div class="choice no" onclick="verdict('no')">
       <div class="choice-icon">⏳</div>
@@ -471,19 +629,15 @@
 </div>
 
 <script>
-  let cur = 0;
-  let timerInt = null;
-  let tLeft = 300;
-  let timerGoing = false;
+  let cur = 0, timerInt = null, tLeft = 300, timerGoing = false;
   const total = 7;
 
   function go(n) {
     document.getElementById('s' + cur).classList.remove('active');
     cur = n;
     document.getElementById('s' + cur).classList.add('active');
-    const pct = (cur / (total - 1)) * 100;
-    document.getElementById('prog').style.width = pct + '%';
-    document.getElementById('stepin').textContent = String(cur + 1).padStart(2,'0') + ' / 06';
+    document.getElementById('prog').style.width = (cur / (total - 1) * 100) + '%';
+    document.getElementById('stepin').textContent = String(cur + 1).padStart(2,'0') + ' / 07';
     window.scrollTo(0, 0);
     if (n === 4) loadRecap();
     if (n === 6) {
@@ -495,8 +649,9 @@
   function wc(tid, wid, bid, min) {
     const t = document.getElementById(tid).value;
     const w = t.trim() === '' ? 0 : t.trim().split(/\s+/).length;
-    const lbl = w + ' mot' + (w > 1 ? 's' : '');
-    document.getElementById(wid).textContent = w < min ? lbl + ' — minimum ' + min + ' pour continuer' : lbl;
+    document.getElementById(wid).textContent = w < min
+      ? w + ' mot' + (w > 1 ? 's' : '') + ' — minimum ' + min + ' pour continuer'
+      : w + ' mot' + (w > 1 ? 's' : '');
     if (bid) document.getElementById(bid).disabled = w < min;
   }
 
@@ -504,12 +659,11 @@
     const t1 = document.getElementById('ta1').value;
     const t2 = document.getElementById('ta2').value;
     document.getElementById('recap').textContent = [t1, t2].filter(Boolean).join('\n\n---\n\n') || '—';
-    tLeft = 300;
-    timerGoing = false;
+    tLeft = 300; timerGoing = false;
     if (timerInt) clearInterval(timerInt);
     document.getElementById('tnum').textContent = '5:00';
     document.getElementById('tnum').classList.remove('urgent');
-    document.getElementById('tsub').textContent = 'Prêt à commencer';
+    document.getElementById('tsub').textContent = "Lis d'abord à voix haute. Puis lance.";
     document.getElementById('tbtn').textContent = '▶ Lancer les 5 minutes';
     document.getElementById('tbtn').disabled = false;
     document.getElementById('btn4').disabled = true;
@@ -518,14 +672,12 @@
   function startTimer() {
     if (timerGoing) return;
     timerGoing = true;
-    document.getElementById('tbtn').textContent = '⏸ En cours — Ne touche pas au téléphone';
+    document.getElementById('tbtn').textContent = '⏸ En cours — Ne touche plus à rien';
     document.getElementById('tbtn').disabled = true;
-    document.getElementById('tsub').textContent = 'Reste assis. Respire.';
-
+    document.getElementById('tsub').textContent = 'Reste assis. Respire. Ne fuis pas.';
     timerInt = setInterval(() => {
       tLeft--;
-      const m = Math.floor(tLeft / 60);
-      const s = tLeft % 60;
+      const m = Math.floor(tLeft / 60), s = tLeft % 60;
       document.getElementById('tnum').textContent = m + ':' + String(s).padStart(2,'0');
       if (tLeft <= 60) {
         document.getElementById('tnum').classList.add('urgent');
@@ -534,7 +686,7 @@
       if (tLeft <= 0) {
         clearInterval(timerInt);
         document.getElementById('tnum').textContent = '0:00';
-        document.getElementById('tsub').textContent = "C'est fait.";
+        document.getElementById('tsub').textContent = "C'est fait. Tu es resté.";
         document.getElementById('tbtn').textContent = '✓ Terminé';
         document.getElementById('tbtn').style.cssText = 'background:#1a4a2e;border-color:#1a4a2e;cursor:default;';
         document.getElementById('btn4').disabled = false;
@@ -547,17 +699,16 @@
     document.querySelectorAll('.act').forEach(e => e.classList.remove('sel'));
     el.classList.add('sel');
     const ta = document.getElementById('ta3');
-    ta.value = txt;
-    ta.focus();
-    wc('ta3','wc3','btn5',5);
+    ta.value = txt; ta.focus();
+    wc('ta3','wc3','btn5',10);
   }
 
   function verdict(v) {
     const msg = document.getElementById('final-msg');
     if (v === 'yes') {
-      msg.innerHTML = '<div class="sci" style="margin-top:20px;"><div class="sci-label">✓ Décision actée</div><p style="color:var(--white)">Neurologiquement, tu viens de réécrire une partie de ton identité. Le cerveau croit ce que tu fais. Maintenant : lève-toi et fais-le.</p></div>';
+      msg.innerHTML = '<div class="sci" style="margin-top:24px;"><div class="sci-label">✓ Décision actée</div><p style="color:var(--white); font-size:18px;">Neurologiquement, tu viens de commencer à réécrire ton identité. Le cerveau croit ce que tu fais — pas ce que tu penses. Lève-toi. Fais-le maintenant.</p></div>';
     } else {
-      msg.innerHTML = '<div class="sci" style="margin-top:20px;border-left-color:#444;background:rgba(255,255,255,0.02);"><div class="sci-label" style="color:#666">Dans 5 ans</div><p style="color:#888">Tu seras exactement là où tu es aujourd\'hui. Avec quelques vidéos de plus dans ta liste "à regarder plus tard". La porte était ouverte. Tu l\'as laissée se refermer.</p></div>';
+      msg.innerHTML = '<div class="sci" style="margin-top:24px;border-left-color:#444;background:rgba(255,255,255,0.02);"><div class="sci-label" style="color:#555;">Dans 5 ans</div><p style="color:#666; font-size:17px;">Tu seras exactement là où tu es aujourd\'hui. Avec quelques protocoles de plus dans ta liste "à faire plus tard". La porte était ouverte. Tu l\'as laissée se refermer.</p></div>';
     }
   }
 </script>
